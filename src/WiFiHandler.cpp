@@ -48,11 +48,23 @@ void setupUDP() {
   Serial.println("UDP listening started");
 }
 
+void printHexBuffer(const uint8_t *buffer, size_t length) {
+  for (size_t i = 0; i < length; ++i) {
+    if (buffer[i] < 0x10) Serial.print("0"); // Add leading zero
+    Serial.print(buffer[i], HEX);
+    Serial.print(" ");
+  }
+  Serial.println();
+}
+
 void loopUDP() {
   int packetSize = udp.parsePacket();
-  if (packetSize >= 4) {
+  
+  if (packetSize >= 3) {
     byte buffer[4];
     udp.read(buffer, 4);
+    
+    printHexBuffer(buffer, sizeof(buffer));
 
     byte version = buffer[0];
     byte cmd = buffer[1];
@@ -74,6 +86,10 @@ void loopUDP() {
       Serial.print("Servo value: ");
       Serial.println(value);
       servo.write(value);
+    }
+
+    if(cmd == 2 && name== 52){
+      brodcastIp();
     }
   }
 }
