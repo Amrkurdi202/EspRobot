@@ -1,7 +1,9 @@
+#include<Arduino.h>
+#include "PinManger.h"
+#include "SerialManger.h"
 #include "WiFiHandler.h"
 #include "MotorHandler.h"
 #include "ServoHandler.h"
-#include "PinManger.h"
 
 void setup() {
   setupPins();
